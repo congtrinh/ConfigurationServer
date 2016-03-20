@@ -18,7 +18,7 @@ var userService = {
     addUser: function (username, password) {
         if (userRepo.getUserInfo(username) === undefined) {
             var userInfo = {};
-            userInfo.salt = crypto.randomBytes(SALT_NUM_BYTES);
+            userInfo.salt = crypto.randomBytes(SALT_NUM_BYTES).toString('hex');
             userInfo.password = encrypt(password, userInfo.salt);
 
             userRepo.upsert(username, userInfo);

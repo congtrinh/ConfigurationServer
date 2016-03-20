@@ -1,11 +1,20 @@
 var http = require('http');
 var dispatcher = require('./app/util/HttpDispatcher');
 var userController = require('./app/controller/UserController')
+var constants = require('./app/util/Constants')
 
 const PORT=8080;
 
-dispatcher.onPost('/login', function (req, res) {
+dispatcher.onPost(constants.routes.v1.user.login, function (req, res) {
     userController.login(req,res);
+});
+
+dispatcher.onPost(constants.routes.v1.user.create, function (req, res) {
+    userController.create(req,res);
+});
+
+dispatcher.onPost(constants.routes.v1.user.logout, function (req, res) {
+    userController.logout(req,res);
 });
 
 dispatcher.onGet('/hello', function (req, res) {
