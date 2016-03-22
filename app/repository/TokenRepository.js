@@ -6,11 +6,13 @@
 var tokenRepo = {
 
     getUsername: function(token) {
-        return data[token].username;
+        return data[token];
     },
 
     upsertToken: function(token, username) {
-        data[token].username = username;
+        var tokenData = {};
+        token.username = username;
+        data[token] = tokenData;
     },
 
     deleteToken: function(token) {

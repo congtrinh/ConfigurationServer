@@ -1,8 +1,9 @@
-var tokenRepo = require('../repository/TokenRepository')
+var tokenRepo = require('../repository/TokenRepository'),
+    crypto = require('crypto');
 
 var tokenService = {
     generateToken: function () {
-
+        return crypto.randomBytes(256).toString('hex');
     },
 
     getUsername: function (token) {
@@ -14,6 +15,13 @@ var tokenService = {
     },
 
     deleteToken: function (token) {
-        tokenRepo.deleteToken(token);
+        if (this.getUsername(token) === undefined) {
+            return false;
+        } else {
+            tokenRepo.deleteToken(token);
+            return true;
+        }
     }
 }
+
+module.exports = tokenService;

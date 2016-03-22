@@ -14,18 +14,26 @@ var userContoller = {
         }
 
         if(userService.verifyPassword(username, password)){
-            res.statusCode = 200;
-            //TODO add token
+            res.writeHead(200, {'Content-Type': 'text/javascript'});
+            var token = tokenService.generateToken();
+            tokenService.upsertToken(token, username);
+            res.end(JSON.stringify({"token": token}));
         } else {
             res.statusCode = 401;
             res.write(JSON.stringify({'message':'Invalid credentials.'}));
+            res.end();
         }
-        res.end()
+
     },
     
     logout: function (req, res) {
-        var authorizationToken = req.headers.authorization;
-        tokenService.deleteToken()
+        var token = req.body.token || req.headers['x-access-token'];
+        if(tokenService.deleteToken(token)){
+            res.statusCode = 200;
+        } else {
+            res.statusCode = 404;
+        }
+        res.end();
     },
 
     create: function (req, res) {
@@ -46,7 +54,6 @@ var userContoller = {
 
         res.end();
     }
-    
 };
 
 
