@@ -1,6 +1,8 @@
 var http = require('http');
 var dispatcher = require('./app/util/HttpDispatcher');
 var userController = require('./app/controller/UserController')
+var configController = require('./app/controller/ConfigController')
+
 var constants = require('./app/util/Constants')
 
 const PORT=8080;
@@ -15,6 +17,22 @@ dispatcher.onPost(constants.routes.v1.user.create, function (req, res) {
 
 dispatcher.onPost(constants.routes.v1.user.logout, function (req, res) {
     userController.logout(req,res);
+});
+
+dispatcher.onGet(constants.routes.v1.config.get, function (req, res) {
+    configController.getConfig(req,res);
+});
+
+dispatcher.onPost(constants.routes.v1.config.create, function (req, res) {
+    configController.createConfig(req,res);
+});
+
+dispatcher.on('put', constants.routes.v1.config.update, function (req, res) {
+    configController.updateConfig(req,res);
+});
+
+dispatcher.on('delete', constants.routes.v1.config.delete, function (req, res) {
+    configController.deleteConfig(req,res);
 });
 
 dispatcher.onGet('/hello', function (req, res) {

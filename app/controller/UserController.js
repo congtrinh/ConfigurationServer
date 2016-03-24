@@ -29,13 +29,19 @@ var userContoller = {
     logout: function (req, res) {
         var token = req.body.token || req.headers['x-access-token'];
         if(tokenService.deleteToken(token)){
-            res.statusCode = 200;
+            res.statusCode = 204;
         } else {
             res.statusCode = 404;
         }
         res.end();
     },
 
+    /**
+     * Really isnt within scope of project but needed for testing.
+     * 
+     * @param req
+     * @param res
+     */
     create: function (req, res) {
         var username = req.params.username;
         var password = req.params.password;
@@ -46,7 +52,7 @@ var userContoller = {
         }
 
         if(userService.addUser(username, password)){
-            res.statusCode = 200;
+            res.statusCode = 204;
         } else {
             res.statusCode = 409;
             res.write(JSON.stringify({'message':'User already exist.'}));

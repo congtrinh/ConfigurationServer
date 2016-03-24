@@ -6,7 +6,7 @@
 
 var util = require('util');
 var HttpDispatcher = function() {
-    this.listeners = { get: [ ], post: [ ] };
+    this.listeners = { get: [ ], post: [ ], put: [ ], delete: [ ] };
     this.filters = { before: [ ], after: [ ] };
     this.errorListener = function(req, res) {
         res.writeHead(404);

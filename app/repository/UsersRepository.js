@@ -1,5 +1,6 @@
 /**
- * Mock place holder for user DB that contains user/pass
+ * Mock place holder for user DB that contains user/pass.
+ * Pass should be be hashed before storing. Shouldnt be storing plain password.
  */
 
 var usersRepo = {
@@ -10,10 +11,6 @@ var usersRepo = {
 
     upsert: function(username, userInfo) {
         data[username] = userInfo;
-    },
-
-    delete: function(username) {
-        delete data[username];
     }
 };
 

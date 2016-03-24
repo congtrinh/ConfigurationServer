@@ -1,17 +1,18 @@
 /**
- * Mock place holder for token to hold [token,user]
+ * Mock place holder for token to hold [token,user].
+ * Real repo should have a auto invalidate mechanism to clean up old tokens.
  */
 
 
 var tokenRepo = {
 
-    getUsername: function(token) {
+    getTokenData: function(token) {
         return data[token];
     },
 
     upsertToken: function(token, username) {
         var tokenData = {};
-        token.username = username;
+        tokenData.username = username;
         data[token] = tokenData;
     },
 

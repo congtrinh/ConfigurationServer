@@ -26,10 +26,11 @@ describe('GET /hello', function () {
 });
 
 
-describe('User', function () {
+describe('Test', function () {
     var username = getRandomString();
     var password = getRandomString();
     var userRoutes = constants.routes.v1.user;
+    var configRoutes = constants.routes.v1.config;
 
     before(function () {
         server
@@ -41,7 +42,7 @@ describe('User', function () {
         });
     });
 
-    describe('POST ' + userRoutes.login, function () {
+    describe('POST 200 ' + userRoutes.login, function () {
         it('respond with 200', function (done) {
             server
                 .post(userRoutes.login)
@@ -55,7 +56,7 @@ describe('User', function () {
         });
     });
 
-    describe('POST ' + userRoutes.login, function () {
+    describe('POST 301' + userRoutes.login, function () {
         it('respond with 301', function (done) {
             server
                 .post(userRoutes.login)
@@ -92,9 +93,9 @@ describe('User', function () {
                 server
                     .post(userRoutes.logout)
                     .set({'x-access-token': testData.token})
-                    .expect(200) //Ok
+                    .expect(204) //Ok
                     .end(function (err, res) {
-                        res.statusCode.should.equal(200);
+                        res.statusCode.should.equal(204);
                     });
 
                 //Failed on second attempt
@@ -110,5 +111,44 @@ describe('User', function () {
         });
 
     });
+    describe('Configs ' + configRoutes.create, function () {
+        var testData = {'token': ""};
 
+        //Login and get token
+        before(function (done) {
+            server
+                .post(userRoutes.login)
+                .type('form')
+                .send({"username": username, "password": password})
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    testData.token = parseText(res.text).token;
+                    done();
+                });
+        });
+
+        describe('create 200: ' + configRoutes.create, function () {
+            it('200 Create', function (done) {
+                server
+                    .post(configRoutes.create)
+                    .set({'x-access-token': testData.token})
+                    .expect(200) //Ok
+                    .end(function (err, res) {
+                        done();
+                    });
+            });
+        });
+        describe('create 403: ' + configRoutes.create, function () {
+            it('403 Create bad token', function (done) {
+                server
+                    .post(configRoutes.create)
+                    .set({'x-access-token': "badToken"})
+                    .expect(403) //Ok
+                    .end(function (err, res) {
+                        done();
+                    });
+            });
+        });
+    });
 });
