@@ -14,7 +14,7 @@ var parseText = function (textString) {
     return JSON.parse(textString);
 }
 
-describe('GET /hello', function () {
+describe('hello', function () {
     it('respond with json', function (done) {
         server
             .get('/hello')
@@ -128,16 +128,29 @@ describe('Test', function () {
                 });
         });
 
-        describe('create 200: ' + configRoutes.create, function () {
+        describe('create/Get 200: ' + configRoutes.create, function () {
             it('200 Create', function (done) {
                 server
                     .post(configRoutes.create)
+                    .send({'name':'testName', 'hostname':'testHostname', 'port':'testPort', 'username':'testUsername'})
                     .set({'x-access-token': testData.token})
                     .expect(200) //Ok
                     .end(function (err, res) {
+                        if (err) return done(err);
                         done();
                     });
             });
+
+            // it('200 Get', function (done) {
+            //     server
+            //         .get(configRoutes.get)
+            //         .set({'x-access-token': testData.token})
+            //         .expect(200) //Ok
+            //         .end(function (err, res) {
+            //             if (err) return done(err);
+            //             done();
+            //         });
+            // });
         });
         describe('create 403: ' + configRoutes.create, function () {
             it('403 Create bad token', function (done) {
@@ -146,6 +159,7 @@ describe('Test', function () {
                     .set({'x-access-token': "badToken"})
                     .expect(403) //Ok
                     .end(function (err, res) {
+                        if (err) return done(err);
                         done();
                     });
             });

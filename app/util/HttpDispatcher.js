@@ -1,5 +1,6 @@
 /**
- * Shameless ripped from https://github.com/alberto-bottarini/httpdispatcher 
+ * Shameless ripped from https://github.com/alberto-bottarini/httpdispatcher.
+ * Modified to support put and delete.
  */
 
 
@@ -63,7 +64,7 @@ HttpDispatcher.prototype.dispatch = function(req, res) {
         httpChain.addAll(afterFilters);
         httpChain.next(req, res);
     }
-    if(method == 'post') {
+    if(method == 'post' || method == 'put') {
         var body = '';
         req.on('data', function(data) {
             body += data;

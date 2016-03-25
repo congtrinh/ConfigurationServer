@@ -2,8 +2,7 @@
  * Created by CT on 3/23/16.
  */
 var tokenService = require('../service/TokenService'),
- configService = require('../service/ConfigService');
-
+    configService = require('../service/ConfigService');
 
 
 var configController = {
@@ -11,14 +10,19 @@ var configController = {
         var token = req.body.token || req.headers['x-access-token'];
         var tokenUser = tokenService.getUsername(token);
 
-        if(!tokenUser){
+        if (!tokenUser) {
             responseWithUnauthorized(res);
             return;
         } else {
-            var configObject = createConfigObject("kingcong", "kingcongHost", "kingcongPort", "kingcongUsername");
-            configService.saveConfig(tokenUser.username, configObject);
-            res.statusCode = 200;
-            res.end();
+            var reqBody = JSON.parse(req.body);
+            if (reqBody) {
+
+                configService.saveConfig(tokenUser.username, reqBody);
+                res.statusCode = 200;
+                res.end();
+            } else {
+
+            }
         }
 
     },
@@ -26,7 +30,7 @@ var configController = {
         var token = req.body.token || req.headers['x-access-token'];
         var tokenUser = tokenService.getUsername(token);
 
-        if(!tokenUser){
+        if (!tokenUser) {
             responseWithUnauthorized(res);
             return;
         }
@@ -37,7 +41,7 @@ var configController = {
         var token = req.body.token || req.headers['x-access-token'];
         var tokenUser = tokenService.getUsername(token);
 
-        if(!tokenUser){
+        if (!tokenUser) {
             responseWithUnauthorized(res);
             return;
         }
@@ -46,7 +50,7 @@ var configController = {
         var token = req.body.token || req.headers['x-access-token'];
         var tokenUser = tokenService.getUsername(token);
 
-        if(!tokenUser){
+        if (!tokenUser) {
             responseWithUnauthorized(res);
             return;
         }
@@ -55,13 +59,19 @@ var configController = {
 
 var responseWithUnauthorized = function (res) {
     res.statusCode = 403;
-    res.write(JSON.stringify({"message":"Unauthorized"}));
+    res.write(JSON.stringify({"message": "Unauthorized"}));
+    res.end();
+}
+
+var responseWithInvalid = function (res) {
+    res.statusCode = 400;
+    res.write(JSON.stringify({"message": "Invalid"}));
     res.end();
 }
 
 
 var createConfigObject = function (name, hostname, port, username) {
-    var config = {"name":name, "hostname":hostname, "port":port, "username":username};
+    var config = {"name": name, "hostname": hostname, "port": port, "username": username};
     return config;
 }
 
