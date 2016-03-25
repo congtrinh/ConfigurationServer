@@ -13,9 +13,10 @@ var constants = {
             },
             config :{
                 create: "/v1/config",
-                get: "/v1/config/*",
-                update: "/v1/config/*",
-                delete: "/v1/config/*"
+                get: "/v1/config/:name",
+                getAll: "/v1/config",
+                put: "/v1/config/:name",
+                delete: "/v1/config/:name"
             }
         }
     }

@@ -10,7 +10,7 @@ var configService = {
 
         if(!userConfigs[config.name]){
             userConfigs[config.name] = config;
-            configRepo.saveConfig(username, config);
+            configRepo.saveConfig(username, userConfigs);
             return true;
         } else {
             return false; //Already have a config with the same name
