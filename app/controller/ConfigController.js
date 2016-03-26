@@ -91,6 +91,13 @@ var configController = {
                 for (var key in configs) {
                     configuration.push(configs[key]);
                 }
+                //Sort if there is a query. Unknown key will just return unsorted
+                if(req.body.sort){
+                    configuration.sort(function (a, b) {
+                        return a[req.body.sort] > b[req.body.sort]
+                    })
+                }
+                
                 res.write(JSON.stringify({'configuration': configuration}));
             } else {
                 res.statusCode = 404;
