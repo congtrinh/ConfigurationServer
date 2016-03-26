@@ -119,6 +119,7 @@ describe('Test', function () {
 
         //Login and get token
         before(function (done) {
+            console.log("Using login - " + username + ":" + password )
             server
                 .post(userRoutes.login)
                 .type('form')
@@ -127,8 +128,10 @@ describe('Test', function () {
                 .end(function (err, res) {
                     if (err) return done(err);
                     testData.token = parseText(res.text).token;
+                    console.log("Token:" + testData.token )
                     done();
                 });
+
         });
 
         describe('create/Get 200: ' + configRoutes.create, function () {
