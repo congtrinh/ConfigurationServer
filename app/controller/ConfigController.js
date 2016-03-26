@@ -97,6 +97,16 @@ var configController = {
                         return a[req.body.sort] > b[req.body.sort]
                     })
                 }
+
+                //Use start as the starting checkpoint
+                if(req.body.start){
+                    configuration = configuration.slice(req.body.start)
+                }
+
+                //Use start as the starting checkpoint
+                if(req.body.limit){
+                    configuration = configuration.slice(0, req.body.limit);
+                }
                 
                 res.write(JSON.stringify({'configuration': configuration}));
             } else {
